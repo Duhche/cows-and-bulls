@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using cows_and_bulls.Models;
 
 namespace cows_and_bulls.Data
 {
@@ -9,5 +10,6 @@ namespace cows_and_bulls.Data
             : base(options)
         {
         }
+        public DbSet<cows_and_bulls.Models.Game> Game { get; set; } = default!;
     }
 }
