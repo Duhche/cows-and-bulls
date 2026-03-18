@@ -1,8 +1,120 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@{
+    Layout = null;
+    ViewData["Title"] = "Cows and Bulls - Home";
 }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Cows and Bulls</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #EDF1D6; /* light green */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+        .menu {
+            background: #9DC08B; /* slightly darker green */
+            padding: 50px 60px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            text-align: center;
+            width: 350px;
+        }
+
+            .menu h1 {
+                margin-bottom: 25px;
+                color: #40513B; /* dark green text */
+                font-size: 32px;
+            }
+
+            .menu p {
+                margin-bottom: 30px;
+                color: #40513B;
+                font-size: 16px;
+            }
+
+            /* Game buttons */
+            .menu button {
+                display: block;
+                width: 100%;
+                padding: 14px 0;
+                margin: 12px 0;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 10px;
+                background-color: #099966; /* vibrant green */
+                color: #EDF1D6; /* light text */
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .menu button:hover {
+                    background-color: #40513B; /* dark green */
+                    color: #EDF1D6;
+                }
+
+        /* Account strip */
+        .account-strip {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+            .account-strip a {
+                text-decoration: none;
+                padding: 8px 16px;
+                border-radius: 8px;
+                background-color: #099966;
+                color: #EDF1D6;
+                font-weight: bold;
+                transition: all 0.3s ease;
+            }
+
+                .account-strip a:hover {
+                    background-color: #40513B;
+                    color: #EDF1D6;
+                }
+
+        /* Remove form default spacing */
+        .menu form {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <h1>Cows and Bulls</h1>
+        <p>Welcome! Choose an option to get started.</p>
+
+        <!-- Start Game button -->
+        <form method="get" action="/Game/Start">
+            <button type="submit">Start Game</button>
+        </form>
+
+        <!-- Instructions button -->
+        <form method="get" action="/Home/Instructions">
+            <button type="submit">Instructions</button>
+        </form>
+
+        <!-- About button -->
+        <form method="get" action="/Home/About">
+            <button type="submit">About</button>
+        </form>
+
+        <!-- Account strip -->
+        <div class="account-strip">
+            <a href="/Account/Login">Login</a>
+            <a href="/Account/Register">Register</a>
+        </div>
+    </div>
+</body>
+</html>
