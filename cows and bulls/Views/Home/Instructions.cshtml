@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Instructions";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Instructions</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://img.freepik.com/free-vector/green-grass-vector-seamless-texture-lawn-nature-meadow-plant-field-natural-outdoor-illustration_1284-47056.jpg');
+            background-repeat: repeat;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(157, 192, 139, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 750px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            color: #40513B;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 25px;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
+        ul {
+            line-height: 1.7;
+        }
+
+        .highlight {
+            font-weight: bold;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+            .back-btn a {
+                text-decoration: none;
+                padding: 12px 22px;
+                background-color: #099966;
+                color: #EDF1D6;
+                border-radius: 10px;
+                font-weight: bold;
+            }
+
+                .back-btn a:hover {
+                    background-color: #40513B;
+                }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bletchley Code Breakers</h1>
+        <p style="text-align:center;">
+            Crack the enemy code and save the mission.
+        </p>
+
+        <h2>🎯 Objective</h2>
+        <p>
+            Your goal is to guess a hidden 4-digit code representing enemy battleship coordinates.
+        </p>
+
+        <h2>🧩 Game Rules</h2>
+        <ul>
+            <li>The code consists of <span class="highlight">4 digits</span>.</li>
+            <li>Each digit is between <span class="highlight">0 and 7</span>.</li>
+            <li>You have <span class="highlight">13 attempts</span> to guess the correct code.</li>
+            <li>Depending on the mode, digits <span class="highlight">may or may not repeat</span>.</li>
+        </ul>
+
+        <h2>💡 Feedback System</h2>
+        <p>After each guess, you will receive:</p>
+        <ul>
+            <li><span class="highlight">Correct Numbers</span> → digits that exist in the code but are in the wrong position</li>
+            <li><span class="highlight">Correct Position</span> → digits that are correct and in the correct place</li>
+        </ul>
+
+        <p>
+            ⚠️ No additional hints will be given. You only get counts — nothing more.
+        </p>
+
+        <h2>🎮 Game Modes</h2>
+        <ul>
+            <li><span class="highlight">Player vs Player</span> – One player sets the code, the other guesses.</li>
+            <li><span class="highlight">Player vs Computer</span> – The computer generates the code.</li>
+        </ul>
+
+        <h2>📊 Difficulty Variants</h2>
+        <ul>
+            <li><span class="highlight">No Repeats</span> – All digits are unique</li>
+            <li><span class="highlight">Repeats Allowed</span> – Digits can repeat</li>
+        </ul>
+
+        <h2>🏁 Winning the Game</h2>
+        <ul>
+            <li>You win if you guess all 4 digits in the correct positions.</li>
+            <li>You lose if you fail within 13 attempts.</li>
+        </ul>
+
+        <div class="back-btn">
+            <a href="/">⬅ Back to Menu</a>
+        </div>
+    </div>
+</body>
+</html>

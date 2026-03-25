@@ -7,7 +7,10 @@ namespace cows_and_bulls.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        public IActionResult Instructions()
+        {
+            return View();
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

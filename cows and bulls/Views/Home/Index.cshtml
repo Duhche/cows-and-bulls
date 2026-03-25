@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
     ViewData["Title"] = "Cows and Bulls - Home";
 }
@@ -11,7 +10,9 @@
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #EDF1D6; /* light green */
+            background-image: url('https://img.freepik.com/free-vector/green-grass-vector-seamless-texture-lawn-nature-meadow-plant-field-natural-outdoor-illustration_1284-47056.jpg');
+            background-repeat: repeat; /* seamless grass texture */
+            background-size: auto;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,7 +21,7 @@
         }
 
         .menu {
-            background: #9DC08B; /* slightly darker green */
+            background: rgba(157, 192, 139, 0.95); /* semi-transparent for better readability */
             padding: 50px 60px;
             border-radius: 16px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.25);
@@ -30,7 +31,7 @@
 
             .menu h1 {
                 margin-bottom: 25px;
-                color: #40513B; /* dark green text */
+                color: #40513B;
                 font-size: 32px;
             }
 
@@ -50,14 +51,14 @@
                 font-weight: bold;
                 border: none;
                 border-radius: 10px;
-                background-color: #099966; /* vibrant green */
-                color: #EDF1D6; /* light text */
+                background-color: #099966;
+                color: #EDF1D6;
                 cursor: pointer;
                 transition: all 0.3s ease;
             }
 
                 .menu button:hover {
-                    background-color: #40513B; /* dark green */
+                    background-color: #40513B;
                     color: #EDF1D6;
                 }
 
