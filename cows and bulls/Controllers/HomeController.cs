@@ -11,6 +11,10 @@ namespace cows_and_bulls.Controllers
         {
             return View();
         }
+        public IActionResult About()
+        {
+            return View();
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
