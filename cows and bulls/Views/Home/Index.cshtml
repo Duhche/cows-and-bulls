@@ -20,6 +20,7 @@
             height: 100vh;
             margin: 0;
         }
+        
 
         .menu {
             background: rgba(157, 192, 139, 0.95); /* semi-transparent for better readability */
@@ -85,14 +86,55 @@
                     background-color: #40513B;
                     color: #EDF1D6;
                 }
+                .account-strip form {
+    margin: 0;
+}
+
+.account-strip button {
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: #099966;
+    color: #EDF1D6;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.account-strip button:hover {
+    background-color: #40513B;
+    color: #EDF1D6;
+}
 
         /* Remove form default spacing */
         .menu form {
             margin: 0;
         }
+
+        .account-box {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: rgba(9, 153, 102, 0.9);
+    color: #EDF1D6;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
     </style>
 </head>
 <body>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+{
+    <div class="account-box">
+        👤 @User.Identity.Name
+    </div>
+    }
     <div class="menu">
         <h1>Cows and Bulls</h1>
         <p>Welcome! Choose an option to get started.</p>
@@ -114,9 +156,22 @@
 
         <!-- Account strip -->
         <div class="account-strip">
-            <a href="/Account/Login">Login</a>
-            <a href="/Account/Register">Register</a>
-        </div>
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <form method="post" action="/Account/Logout">
+    <button type="submit">Logout</button>
+
+
+</form>
+    }
+    else
+    {
+        <a href="/Account/Login">Login</a>
+        <a href="/Account/Register">Register</a>
+    }
+
+</div>
     </div>
 </body>
 </html>
