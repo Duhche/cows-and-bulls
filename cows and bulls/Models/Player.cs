@@ -14,6 +14,13 @@ namespace cows_and_bulls.Models
             [Required]
             [StringLength(255)]
             public string Password { get; set; }
+
+        public int Score { get; set; } = 0;
+
+        public ICollection<Game> Games { get; set; }
+            = new List<Game>();
+
         
+
     }
 }
