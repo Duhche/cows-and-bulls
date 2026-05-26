@@ -6,6 +6,8 @@ namespace cows_and_bulls.Models
     {
         public int Id { get; set; }
 
+        
+
         public string UserGuess { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -17,6 +19,7 @@ namespace cows_and_bulls.Models
 
         public int GameId { get; set; }
 
+        
         public Game Game { get; set; }
     }
 }

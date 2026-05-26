@@ -23,7 +23,8 @@ namespace cows_and_bulls.Models
         [Required]
         public int Move { get; set; }
 
-        [Required] public int Moves { get; set; }[Required] public int Removed { get; set; }
+        [Required] public int Moves { get; set; }
+        [Required] public int Removed { get; set; }
         public bool Win { get; set; }
 
       
