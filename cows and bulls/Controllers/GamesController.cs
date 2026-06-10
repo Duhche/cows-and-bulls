@@ -1,164 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using cows_and_bulls.Data;
-using cows_and_bulls.Models;
 
 namespace cows_and_bulls.Controllers
 {
     public class GamesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        // Пазим тайното число и броя опити в паметта на сървъра, за да не ни трябва база данни
+        private static string SecretCode = "";
+        private static int MovesCount = 0;
+        private static List<string> History = new List<string>();
+        private static bool IsGameWon = false;
 
-        public GamesController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Games
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.Game.Include(g => g.Player);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Games/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var game = await _context.Game
-                .Include(g => g.Player)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (game == null)
-            {
-                return NotFound();
-            }
-
-            return View(game);
-        }
-
-        // GET: Games/Create
+        // Това се извиква от твоя зелен бутон "Start Game"
         public IActionResult Create()
         {
-            ViewData["PlayerId"] = new SelectList(_context.Set<Player>(), "Id", "Nickname");
+            // ПРОВЕРКА: Ако потребителят няма акаунт (не е логнат), го пращаме на регистрация
+            if (User.Identity == null || !User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Account/Register");
+            }
+
+            // Твоят оригинален код без промяна:
+            // Нулираме играта и генерираме ново тайно 4-цифрено число с уникални цифри (от 0 до 7)
+            MovesCount = 0;
+            IsGameWon = false;
+            History.Clear();
+
+            var rand = new Random();
+            var digits = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+            SecretCode = "";
+
+            for (int i = 0; i < 4; i++)
+            {
+                int idx = rand.Next(digits.Count);
+                SecretCode += digits[idx];
+                digits.RemoveAt(idx);
+            }
+
+            // Директно пренасочваме към екрана за игра
+            return RedirectToAction(nameof(Details));
+        }
+
+        // Екранът на самата игра
+        public IActionResult Details()
+        {
+            ViewBag.Moves = MovesCount;
+            ViewBag.History = History;
+            ViewBag.Win = IsGameWon;
             return View();
         }
 
-        // POST: Games/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Извиква се, когато играчът въведе число и натисне бутона "Провери"
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateTime,Move,Win,PlayerId")] Game game)
+        public IActionResult PlayAction(string userGuess)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(userGuess) || userGuess.Length != 4 || !userGuess.All(char.IsDigit))
             {
-                _context.Add(game);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["PlayerId"] = new SelectList(_context.Set<Player>(), "Id", "Nickname", game.PlayerId);
-            return View(game);
-        }
-
-        // GET: Games/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                TempData["Error"] = "Въведете точно 4 цифри!";
+                return RedirectToAction(nameof(Details));
             }
 
-            var game = await _context.Game.FindAsync(id);
-            if (game == null)
-            {
-                return NotFound();
-            }
-            ViewData["PlayerId"] = new SelectList(_context.Set<Player>(), "Id", "Nickname", game.PlayerId);
-            return View(game);
-        }
+            int bulls = 0;
+            int cows = 0;
 
-        // POST: Games/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateTime,Move,Win,PlayerId")] Game game)
-        {
-            if (id != game.Id)
+            // Логика за преброяване на бикове и крави
+            for (int i = 0; i < 4; i++)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (userGuess[i] == SecretCode[i])
                 {
-                    _context.Update(game);
-                    await _context.SaveChangesAsync();
+                    bulls++;
                 }
-                catch (DbUpdateConcurrencyException)
+                else if (SecretCode.Contains(userGuess[i]))
                 {
-                    if (!GameExists(game.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    cows++;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["PlayerId"] = new SelectList(_context.Set<Player>(), "Id", "Nickname", game.PlayerId);
-            return View(game);
-        }
 
-        // GET: Games/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            MovesCount++;
+
+            // Добавяме опита в историята, която ще се покаже на екрана
+            History.Insert(0, $"Опит #{MovesCount} | Число: {userGuess} -> 🟢 Бикове: {bulls}, 🔴 Крави: {cows}");
+
+            if (bulls == 4)
             {
-                return NotFound();
+                IsGameWon = true;
+                TempData["Success"] = $"Честито! Разшифрова кода {SecretCode} успешно от {MovesCount} опита!";
             }
 
-            var game = await _context.Game
-                .Include(g => g.Player)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (game == null)
-            {
-                return NotFound();
-            }
-
-            return View(game);
-        }
-
-        // POST: Games/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var game = await _context.Game.FindAsync(id);
-            if (game != null)
-            {
-                _context.Game.Remove(game);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool GameExists(int id)
-        {
-            return _context.Game.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Details));
         }
     }
 }
